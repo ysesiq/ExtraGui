@@ -28,7 +28,7 @@
   "mixins": [
     "extragui.mixins.json"
   ],
-  "accessWidener": "extragui.accesswidener",
+  "accessWidener": "extragui.accessWidener",
   "icon": "extragui_icon.png",
   "license": "MIT",
   "custom": {

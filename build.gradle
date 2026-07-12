@@ -1,5 +1,5 @@
 plugins {
-	id 'fml-loom' version '0.1.local'
+	id 'fml-loom' version '0.1'
 	id 'maven-publish'
 }
 
@@ -16,37 +16,56 @@ repositories {
 		name = "Spongepowered"
 		url = "https://repo.spongepowered.org/repository/maven-public/"
 	}
-}
-
-loom {
-	accessWidenerPath = file("src/main/resources/extragui.accesswidener")
-	mergedMinecraftJar()
-	setFML(new File("D:\\Projects\\IDEA\\Minecraft\\MITE\\FishModLoader-v3.4.1.jar"))
-	mods {
-		"ExtraGui" {
-			sourceSet sourceSets.main
-		}
+	maven {
+		name = "ModdedMITE"
+		url = uri("https://maven.limingzxc.top/repository/maven-public/")
 	}
-
 }
 
-runClient{
-	args("--username", "Xy_Lose", "--session", "a.a.a.a", "--width", 854, "--height", 480)
+configurations {
+	fml
+}
+
+tasks.named('runClient', JavaExec).configure { exec ->
+	def user = project.hasProperty('username') ? project.username : 'Dev'
+	exec.setArgs(['--username', user, '--session', '0', '--width', '854', '--height', '480'])
 }
 
 dependencies {
 	// To change the versions see the gradle.properties file
 
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings loom.fmlMCPMappings()
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 //	implementation("org.spongepowered:mixin:0.8.5")
 
-	implementation files("D:\\Projects\\IDEA\\Minecraft\\MITE\\RustedIronCore-1.4.1.jar")
-	implementation files("libs\\ManyLib-2.2.2.jar")
-	implementation files("libs\\ModMenu-1.0.1.jar")
-	implementation files(loom.getFML().toPath())
+	fml "com.github.MinecraftIsTooEasy:FishModLoader:3.4.2"
+	implementation "com.github.MinecraftIsTooEasy:FishModLoader:3.4.2"
+
+	implementation "com.github.MinecraftIsTooEasy:RustedIronCore:1.5.0"
+	implementation "com.github.MinecraftIsTooEasy:RustedIronCore:1.5.0:sources"
+	implementation "com.github.MinecraftIsTooEasy:ManyLib:2.3.0"
+
+	implementation "com.github.MinecraftIsTooEasy:Gson:2.10.1"
+	implementation "com.github.MinecraftIsTooEasy:ModMenu:10.1.1"
+
 }
+
+def fmlResolvedFile = configurations.fml.files.iterator().next()
+
+loom {
+	accessWidenerPath = file("src/main/resources/extragui.accessWidener")
+	mergedMinecraftJar()
+
+	setFML(fmlResolvedFile)
+
+	mods {
+		"Hwite" {
+			sourceSet sourceSets.main
+		}
+	}
+}
+
+dependencies.add("mappings", loom.fmlMCPMappings())
 
 processResources {
 	inputs.property "version", project.version
@@ -73,13 +92,27 @@ jar {
 	}
 }
 
+// configure the maven publication
 publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			from components.java
-		}
-	}
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = project.maven_group
+            artifactId = project.archives_base_name
+            version = project.mod_version
+            from components.java
+        }
+    }
 
-	repositories {
-	}
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+    repositories {
+        maven {
+            name = "ModdedMITE"
+            url = uri("https://maven.limingzxc.top/repository/maven-releases/")
+            credentials {
+                // Read only from gradle.properties (user level, your gradle_home)
+                username = project.findProperty("nexusUsername")
+                password = project.findProperty("nexusPassword")
+            }
+        }
+    }
 }

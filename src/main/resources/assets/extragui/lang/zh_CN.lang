@@ -158,3 +158,5 @@ extragui.stats.equipment.worn=穿着[%s]：%s
 extragui.stats.invertory=物品栏
 
 extragui.gui.anvil.durability=耐久: %d/%d
+
+extragui.biome.temp_rain=(温度: %.1f, 湿度: %.1f)

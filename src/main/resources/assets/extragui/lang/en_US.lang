@@ -158,3 +158,5 @@ extragui.stats.equipment.worn=Worn[%s]: %s
 extragui.stats.invertory=Invertory
 
 extragui.gui.anvil.durability=Durability: %d/%d
+
+extragui.biome.temp_rain=(Temperature: %.1f, Rainfall: %.1f)

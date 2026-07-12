@@ -1,11 +1,13 @@
 package moddedmite.xylose.extragui.gui;
 
 import com.google.common.base.Strings;
+import moddedmite.rustedironcore.api.world.BiomeAPI;
 import moddedmite.xylose.extragui.config.ExtraGuiConfig;
 import moddedmite.xylose.extragui.util.DisplayUtil;
 import moddedmite.xylose.extragui.util.FrameTimeTracker;
 import net.minecraft.*;
 import org.lwjgl.opengl.GL11;
+import moddedmite.xylose.extragui.util.BiomeNameI18n;
 
 import java.awt.*;
 import java.text.SimpleDateFormat;
@@ -313,4 +315,9 @@ public class GuiMiniInfoHandle {
             return ExtraGuiConfig.CustomString.getStringValue();
         return "";
     }
+
+    public String getBiomeFullInfo(BiomeGenBase biome) {
+        return BiomeNameI18n.getBiomeNameI18n(biome) + BiomeNameI18n.getBiomeTempRainInfo(biome);
+    }
+
 }
