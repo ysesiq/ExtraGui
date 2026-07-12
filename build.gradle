@@ -23,7 +23,7 @@ loom {
 	mergedMinecraftJar()
 	setFML(new File("D:\\Projects\\IDEA\\Minecraft\\MITE\\FishModLoader-v3.4.1.jar"))
 	mods {
-		"Hwite" {
+		"ExtraGui" {
 			sourceSet sourceSets.main
 		}
 	}
